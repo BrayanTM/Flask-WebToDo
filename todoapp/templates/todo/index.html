@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container-fluid">
+    <nav class="navbar">
+        <h1>{% block title %}Lista de Tareas{% endblock %}</h1>
+        <a href="{{ url_for('todo.add_task') }}" class="btn btn-success">Crear Tarea</a>
+    </nav>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col">Tareas</th>
+                <th class="col">Estado</th>
+                <th class="col" colspan="2">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo_item in todo_items | reverse%}
+            {% if g.user.id == todo_item.user %}
+            <tr>
+                <td>
+                    <h5>{{ todo_item.title }}</h5>
+                    <p>{{ todo_item.description }}</p>
+                </td>
+                <td>
+                    {% if todo_item.completed %}
+                        <span class="text-success">Completada</span>
+                    {% else %}
+                        <span class="text-danger">Pendiente</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('todo.update_task', todo_id=todo_item.id) }}" class="btn btn-primary">Editar</a>
+                </td>
+                <td>
+                    <form action="{{ url_for('todo.delete_task', todo_id=todo_item.id) }}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
