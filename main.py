@@ -1,4 +1,4 @@
-from web_todo import create_app
+from todoapp import create_app
 
 if __name__ == "__main__":
     app = create_app()
